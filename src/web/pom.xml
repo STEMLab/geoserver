@@ -43,6 +43,7 @@
     <module>gwc</module>
     <module>security</module>
     <module>rest</module>
+    <module>gs-web-core-iso</module>
   </modules>
 
 </project>
