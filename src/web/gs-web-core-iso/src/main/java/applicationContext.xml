@@ -1,0 +1,20 @@
+ <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+ <beans>
+ 	<bean id="data3dCategory" class="org.geoserver.web.Category">
+	    <property name="nameKey" value="category.data3d" />
+	    <property name="order" value="999" />
+  	</bean>
+  	
+    <bean id="store3dMenuPage" class="org.geoserver.web.MenuPageInfo">
+	    <property name="id" value="stores" />
+	    <property name="titleKey" value="StorePage3D.title" />
+	    <property name="descriptionKey" value="StorePage3D.description" />
+	    <property name="componentClass" value="org.geoserver.web.data.store.StorePage" />
+	    <property name="category" ref="data3dCategory" />
+	    <property name="icon" value="../../img/icons/silk/database.png" />
+	    <!--  <property name="order" value="17" /> -->
+	    <property name="authorizer" ref="workspaceAdminAuthorizer"/>
+  	</bean>
+    
+</beans>

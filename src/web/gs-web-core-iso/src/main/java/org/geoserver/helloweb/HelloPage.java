@@ -1,0 +1,18 @@
+package org.geoserver.helloweb;
+
+import org.apache.wicket.markup.html.basic.Label;
+import org.geoserver.web.GeoServerBasePage;
+
+/**
+ * 
+ */
+
+/**
+ * @author hgryoo
+ *
+ */
+public class HelloPage extends GeoServerBasePage {
+	public HelloPage() {
+	       add( new Label( "hellolabel", "Hello World!") );
+	   }
+}
