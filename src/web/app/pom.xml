@@ -201,6 +201,7 @@
       <scope>test</scope>
     </dependency>
     
+    
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-csv-iso</artifactId>
@@ -221,8 +222,22 @@
       <artifactId>gt-geometry-ng</artifactId>
       <version>15-SNAPSHOT</version>
     </dependency>
+    <dependency>
+      <groupId>org.geotools.xsd</groupId>
+      <artifactId>gt-xsd-gml2-iso</artifactId>
+      <version>15-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools.xsd</groupId>
+      <artifactId>gt-xsd-filter-iso</artifactId>
+      <version>15-SNAPSHOT</version>
+    </dependency>
     
-    
+    <dependency>
+      <groupId>org.geoserver</groupId>
+      <artifactId>gs-wfs-iso</artifactId>
+      <version>2.9-SNAPSHOT</version>
+    </dependency>
     
   </dependencies>
   <build>
