@@ -507,5 +507,11 @@
         <module>wmts-multi-dimensional</module>
       </modules>
     </profile>
+    <profile>
+      <id>geoserver-3d</id>
+      <modules>
+        <module>../../geoserver-3d-extension</module>
+      </modules>
+    </profile>
   </profiles>
 </project>

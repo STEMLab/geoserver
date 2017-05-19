@@ -30,10 +30,14 @@
       <artifactId>gs-web-iso</artifactId>
       <version>2.9-SNAPSHOT</version>
     </dependency>
-  
-  
+    
+    <dependency>
+      <groupId>org.geoserver</groupId>
+      <artifactId>gs-wfs-iso</artifactId>
+      <version>2.9-SNAPSHOT</version>
+    </dependency>
 
-  
+
     <dependency>
       <groupId>org.geoserver.web</groupId>
       <artifactId>gs-web-core</artifactId>
@@ -1505,4 +1509,13 @@
       </dependencies>
     </profile>
  </profiles>
+  <dependencyManagement>
+  	<dependencies>
+  		<dependency>
+  			<groupId>org.geoserver</groupId>
+  			<artifactId>gs-wfs-iso</artifactId>
+  			<version>2.9-SNAPSHOT</version>
+  		</dependency>
+  	</dependencies>
+  </dependencyManagement>
 </project>
