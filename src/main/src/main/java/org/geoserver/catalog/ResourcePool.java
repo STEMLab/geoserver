@@ -31,8 +31,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -78,8 +78,8 @@ import org.geotools.data.DataAccessFactory.Param;
 import org.geotools.data.DataAccessFinder;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataStore;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureSource;
+import org.geotools.data.ISODataUtilities;
 import org.geotools.data.Join;
 import org.geotools.data.Repository;
 import org.geotools.data.ows.HTTPClient;
@@ -721,13 +721,13 @@ public class ResourcePool {
 
                 if (path.startsWith("file:")) {
                     File fixedPath = loader.url(path);
-                    URL url = DataUtilities.fileToURL(fixedPath);
+                    URL url = ISODataUtilities.fileToURL(fixedPath);
                     entry.setValue( (V) url.toExternalForm());
                 }
             } else if (value instanceof URL && ((URL) value).getProtocol().equals("file")) {
                 URL url = (URL) value;
                 File fixedPath = loader.url( url.toString() );
-                entry.setValue( (V) DataUtilities.fileToURL(fixedPath));
+                entry.setValue( (V) ISODataUtilities.fileToURL(fixedPath));
             } else if ((key != null) && key.equals("directory") && value instanceof String) {
                 String path = (String) value;
                 //if a url is used for a directory (for example property store), convert it to path
@@ -1229,7 +1229,7 @@ public class ResourcePool {
         final String alias = info.getName();
         final SimpleFeatureType nativeFeatureType = dataStore.getSchema( typeName );
         final SimpleFeatureType renamedFeatureType = (SimpleFeatureType) getFeatureType( info, false );
-        if ( !typeName.equals( alias ) || DataUtilities.compare(nativeFeatureType,renamedFeatureType) != 0 ) {
+        if ( !typeName.equals( alias ) || ISODataUtilities.compare(nativeFeatureType,renamedFeatureType) != 0 ) {
             // rename and retype as necessary
             fs = RetypingFeatureSource.getRetypingSource(dataStore.getFeatureSource(typeName), renamedFeatureType);
         } else {

@@ -11,7 +11,7 @@ import java.util.List;
 
 import org.geoserver.security.VectorAccessLimits;
 import org.geoserver.security.WrapperPolicy;
-import org.geotools.data.DataUtilities;
+import org.geotools.data.ISODataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.ReTypingFeatureCollection;
@@ -49,7 +49,7 @@ public class SecuredSimpleFeatureCollection extends
                 }
                 String[] nameArray = (String[]) names.toArray(new String[names.size()]);
                 try {
-                    this.readSchema = DataUtilities.createSubType(getSchema(), nameArray);
+                    this.readSchema = ISODataUtilities.createSubType(getSchema(), nameArray);
                 } catch (SchemaException e) {
                     // should just not happen
                     throw new RuntimeException(e);

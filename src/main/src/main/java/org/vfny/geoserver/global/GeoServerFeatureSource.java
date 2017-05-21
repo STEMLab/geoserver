@@ -10,7 +10,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -19,27 +18,27 @@ import org.geoserver.catalog.MetadataMap;
 import org.geoserver.catalog.ProjectionPolicy;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataStore;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureListener;
 import org.geotools.data.FeatureLocking;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.FeatureStore;
+import org.geotools.data.ISODataUtilities;
 import org.geotools.data.Query;
 import org.geotools.data.QueryCapabilities;
 import org.geotools.data.ResourceInfo;
-import org.geotools.data.crs.ForceCoordinateSystemFeatureResults;
-import org.geotools.data.crs.ReprojectFeatureResults;
+import org.geotools.data.crs.ISOForceCoordinateSystemFeatureResults;
+import org.geotools.data.crs.ISOReprojectFeatureResults;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
 import org.geotools.factory.Hints.ConfigurationMetadataKey;
-import org.geotools.feature.FeatureTypes;
+import org.geotools.feature.ISOFeatureTypes;
 import org.geotools.feature.SchemaException;
-import org.geotools.feature.collection.MaxSimpleFeatureCollection;
-import org.geotools.feature.collection.SortedSimpleFeatureCollection;
-import org.geotools.filter.spatial.DefaultCRSFilterVisitor;
-import org.geotools.filter.spatial.ReprojectingFilterVisitor;
+import org.geotools.feature.collection.ISOMaxSimpleFeatureCollection;
+import org.geotools.feature.collection.ISOSortedSimpleFeatureCollection;
+import org.geotools.filter.ISOFilterFactoryImpl;
+import org.geotools.filter.spatial.ISODefaultCRSFilterVisitor;
+import org.geotools.filter.spatial.ISOReprojectingFilterVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.opengis.feature.Feature;
@@ -83,7 +82,7 @@ public class GeoServerFeatureSource implements SimpleFeatureSource {
     protected SimpleFeatureSource source;
     
     /** The single filter factory for this source (grabbing it has a high sync penalty */
-    static FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    static FilterFactory2 ff = new ISOFilterFactoryImpl();
 
     /**
      * GeoTools2 Schema information
@@ -135,7 +134,7 @@ public class GeoServerFeatureSource implements SimpleFeatureSource {
      * @param settings Settings for this source
      */
     GeoServerFeatureSource(FeatureSource<SimpleFeatureType, SimpleFeature> source, Settings settings) {
-        this.source = DataUtilities.simple(source);
+        this.source = ISODataUtilities.simple(source);
         this.schema = settings.schema;
         this.definitionQuery = settings.definitionQuery;
         this.declaredCRS = settings.declaredCRS;
@@ -460,12 +459,12 @@ public class GeoServerFeatureSource implements SimpleFeatureSource {
             
             // apply sorting if necessary
             if(sortBy != null) {
-                fc = new SortedSimpleFeatureCollection(fc, sortBy);
+                fc = new ISOSortedSimpleFeatureCollection(fc, sortBy);
             }
             
             //apply limit offset if necessary
             if (offset != null || maxFeatures != null) {
-                fc = new MaxSimpleFeatureCollection(fc, offset == null ? 0 : offset, 
+                fc = new ISOMaxSimpleFeatureCollection(fc, offset == null ? 0 : offset, 
                         maxFeatures == null ? Integer.MAX_VALUE : maxFeatures);
             }
             
@@ -495,7 +494,7 @@ public class GeoServerFeatureSource implements SimpleFeatureSource {
             if(srsHandling == ProjectionPolicy.FORCE_DECLARED) {
                 defaultCRS = declaredCRS;
                 targetCRS = declaredCRS;
-                nativeFeatureType = FeatureTypes.transform(nativeFeatureType, declaredCRS);
+                nativeFeatureType = ISOFeatureTypes.transform(nativeFeatureType, declaredCRS);
             } else if(srsHandling == ProjectionPolicy.REPROJECT_TO_DECLARED) {
                 defaultCRS = declaredCRS;
                 targetCRS = nativeCRS;
@@ -505,13 +504,13 @@ public class GeoServerFeatureSource implements SimpleFeatureSource {
             }
             
             // now we apply a default to all geometries and bbox in the filter
-            DefaultCRSFilterVisitor defaultCRSVisitor = new DefaultCRSFilterVisitor(ff, defaultCRS);
+            ISODefaultCRSFilterVisitor defaultCRSVisitor = new ISODefaultCRSFilterVisitor(ff, defaultCRS);
             Filter filter = query.getFilter() != null ? query.getFilter() : Filter.INCLUDE;
             Filter defaultedFilter = (Filter) filter.accept(defaultCRSVisitor, null);
             
             // and then we reproject all geometries so that the datastore receives
             // them in the native projection system (or the forced one, in case of force) 
-            ReprojectingFilterVisitor reprojectingVisitor = new ReprojectingFilterVisitor(ff, nativeFeatureType);
+            ISOReprojectingFilterVisitor reprojectingVisitor = new ISOReprojectingFilterVisitor(ff, nativeFeatureType);
             Filter reprojectedFilter = (Filter) defaultedFilter.accept(reprojectingVisitor, null);
             
             Query reprojectedQuery = new Query(query);
@@ -539,15 +538,15 @@ public class GeoServerFeatureSource implements SimpleFeatureSource {
         
         if(nativeCRS == null) {
             if(declaredCRS != null) {
-                fc =  new ForceCoordinateSystemFeatureResults(fc, declaredCRS);
+                fc =  new ISOForceCoordinateSystemFeatureResults(fc, declaredCRS);
                 nativeCRS = declaredCRS;
             }
         } else if(srsHandling == ProjectionPolicy.FORCE_DECLARED && !nativeCRS.equals(declaredCRS)) {
-            fc =  new ForceCoordinateSystemFeatureResults(fc, declaredCRS);
+            fc =  new ISOForceCoordinateSystemFeatureResults(fc, declaredCRS);
             nativeCRS = declaredCRS;
         } else if(srsHandling == ProjectionPolicy.REPROJECT_TO_DECLARED && targetCRS == null
                 && !nativeCRS.equals(declaredCRS)) {
-            fc = new ReprojectFeatureResults(fc,declaredCRS);
+            fc = new ISOReprojectFeatureResults(fc,declaredCRS);
         }
 
         
@@ -558,12 +557,12 @@ public class GeoServerFeatureSource implements SimpleFeatureSource {
                 //we do not know what the native crs which means we can 
                 // not be sure if we should reproject or not... so we go 
                 // ahead and reproject regardless
-                fc = new ReprojectFeatureResults(fc,targetCRS);
+                fc = new ISOReprojectFeatureResults(fc,targetCRS);
             }
             else {
                 //only reproject if native != target
                 if (!CRS.equalsIgnoreMetadata(nativeCRS, targetCRS)) {
-                    fc = new ReprojectFeatureResults(fc,targetCRS);                        
+                    fc = new ISOReprojectFeatureResults(fc,targetCRS);                        
                 }
             }
         }

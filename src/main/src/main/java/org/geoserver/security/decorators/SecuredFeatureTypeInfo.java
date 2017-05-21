@@ -25,6 +25,7 @@ import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
 import org.geotools.factory.Hints;
 import org.geotools.feature.FeatureCollection;
+import org.geotools.feature.simple.ISOSimpleFeatureTypeBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -68,7 +69,7 @@ public class SecuredFeatureTypeInfo extends DecoratingFeatureTypeInfo {
             if(ft instanceof SimpleFeatureType) {
                 SimpleFeatureType sft = (SimpleFeatureType) ft;
                 Set<String> properties = new HashSet<String>(Arrays.asList(query.getPropertyNames()));
-                SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
+                ISOSimpleFeatureTypeBuilder tb = new ISOSimpleFeatureTypeBuilder();
                 tb.init(sft);
                 for (AttributeDescriptor at : sft.getAttributeDescriptors()) {
                     String attName = at.getLocalName();

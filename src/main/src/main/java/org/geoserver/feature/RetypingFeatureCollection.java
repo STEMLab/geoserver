@@ -14,18 +14,13 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.ReTypingFeatureCollection;
 import org.geotools.feature.collection.DecoratingSimpleFeatureCollection;
-import org.geotools.feature.simple.SimpleFeatureBuilder;
-import org.geotools.feature.visitor.CountVisitor;
-import org.geotools.feature.visitor.FeatureAttributeVisitor;
-import org.geotools.filter.FilterAttributeExtractor;
+import org.geotools.feature.simple.ISOSimpleFeatureBuilder;
 import org.geotools.filter.identity.FeatureIdImpl;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.identity.FeatureId;
 
 /**
@@ -57,7 +52,7 @@ public class RetypingFeatureCollection extends DecoratingSimpleFeatureCollection
     }
 
 
-    static SimpleFeature retype(SimpleFeature source, SimpleFeatureBuilder builder)
+    static SimpleFeature retype(SimpleFeature source, ISOSimpleFeatureBuilder builder)
             throws IllegalAttributeException {
         SimpleFeatureType target = builder.getFeatureType();
         for (int i = 0; i < target.getAttributeCount(); i++) {
@@ -102,12 +97,12 @@ public class RetypingFeatureCollection extends DecoratingSimpleFeatureCollection
     }
 
     public static class RetypingIterator implements SimpleFeatureIterator {
-        SimpleFeatureBuilder builder;
+    	ISOSimpleFeatureBuilder builder;
         SimpleFeatureIterator delegate;
 
         public RetypingIterator(SimpleFeatureIterator delegate, SimpleFeatureType target) {
             this.delegate = delegate;
-            this.builder = new SimpleFeatureBuilder(target);
+            this.builder = new ISOSimpleFeatureBuilder(target);
         }
 
         public boolean hasNext() {
@@ -131,12 +126,12 @@ public class RetypingFeatureCollection extends DecoratingSimpleFeatureCollection
     public static class RetypingFeatureReader implements
             FeatureReader<SimpleFeatureType, SimpleFeature> {
         FeatureReader<SimpleFeatureType, SimpleFeature> delegate;
-        SimpleFeatureBuilder builder;
+        ISOSimpleFeatureBuilder builder;
 
         public RetypingFeatureReader(FeatureReader<SimpleFeatureType, SimpleFeature> delegate,
                 SimpleFeatureType target) {
             this.delegate = delegate;
-            this.builder = new SimpleFeatureBuilder(target);
+            this.builder = new ISOSimpleFeatureBuilder(target);
         }
 
         public void close() throws IOException {
@@ -163,7 +158,7 @@ public class RetypingFeatureCollection extends DecoratingSimpleFeatureCollection
             FeatureWriter<SimpleFeatureType, SimpleFeature> {
         FeatureWriter<SimpleFeatureType, SimpleFeature> delegate;
 
-        SimpleFeatureBuilder builder;
+        ISOSimpleFeatureBuilder builder;
 
         private SimpleFeature current;
 
@@ -172,7 +167,7 @@ public class RetypingFeatureCollection extends DecoratingSimpleFeatureCollection
         public RetypingFeatureWriter(FeatureWriter<SimpleFeatureType, SimpleFeature> delegate,
                 SimpleFeatureType target) {
             this.delegate = delegate;
-            this.builder = new SimpleFeatureBuilder(target);
+            this.builder = new ISOSimpleFeatureBuilder(target);
         }
 
         public void close() throws IOException {

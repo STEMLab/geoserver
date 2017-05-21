@@ -25,7 +25,7 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureLocking;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
-import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.feature.simple.ISOSimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
@@ -180,7 +180,7 @@ public class RetypingFeatureSource implements SimpleFeatureSource{
         // account
         SimpleFeatureType target = typeMap.getFeatureType();
         if ( query.getPropertyNames() != Query.ALL_NAMES ) {
-            target = SimpleFeatureTypeBuilder.retype(target, query.getPropertyNames());
+            target = ISOSimpleFeatureTypeBuilder.retype(target, query.getPropertyNames());
         }
         return new RetypingFeatureCollection(wrapped.getFeatures(store.retypeQuery(query, typeMap)),
                 target);

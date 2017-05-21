@@ -8,7 +8,7 @@ package org.geoserver.security.decorators;
 import java.io.IOException;
 
 import org.geoserver.security.WrapperPolicy;
-import org.geotools.data.DataUtilities;
+import org.geotools.data.ISODataUtilities;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
@@ -31,19 +31,19 @@ public class SecuredSimpleFeatureSource extends
     
     @Override
     public SimpleFeatureCollection getFeatures() throws IOException {
-        return DataUtilities.simple(super.getFeatures());
+        return ISODataUtilities.simple(super.getFeatures());
     }
     
     @Override
     public SimpleFeatureCollection getFeatures(Filter filter)
             throws IOException {
-        return DataUtilities.simple(super.getFeatures(filter));
+        return ISODataUtilities.simple(super.getFeatures(filter));
     }
     
     @Override
     public SimpleFeatureCollection getFeatures(Query query)
             throws IOException {
-        return DataUtilities.simple(super.getFeatures(query));
+        return ISODataUtilities.simple(super.getFeatures(query));
     }
 
 }
