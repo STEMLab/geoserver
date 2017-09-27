@@ -508,9 +508,9 @@
       </modules>
     </profile>
     <profile>
-      <id>geoserver-3d</id>
+      <id>geoserver-iso</id>
       <modules>
-        <module>../../geoserver-3d-extension</module>
+        <module>../../../geoserver-3d-extension</module>
       </modules>
     </profile>
   </profiles>

@@ -13,6 +13,7 @@ import java.util.List;
 
 import org.geotools.data.Query;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.ISOFilterFactoryImpl;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.PropertyName;
@@ -24,7 +25,7 @@ import org.opengis.filter.expression.PropertyName;
  */
 public class VectorAccessLimits extends DataAccessLimits {
     private static final long serialVersionUID = 1646981660625898503L;
-    private static FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2(null); 
+    private static FilterFactory2 FF = new ISOFilterFactoryImpl();
 
     /**
      * The list of attributes the user is allowed to read (will be band names for raster data)

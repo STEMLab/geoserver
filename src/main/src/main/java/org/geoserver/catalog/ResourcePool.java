@@ -97,7 +97,7 @@ import org.geotools.factory.Hints;
 import org.geotools.feature.AttributeTypeBuilder;
 import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.NameImpl;
-import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.feature.simple.ISOSimpleFeatureTypeBuilder;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.gml2.GML;
@@ -1034,7 +1034,7 @@ public class ResourcePool {
         if (ft instanceof SimpleFeatureType) {
             SimpleFeatureType sft = (SimpleFeatureType) ft;
             //create the feature type so it lines up with the "declared" schema
-            SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
+            ISOSimpleFeatureTypeBuilder tb = new ISOSimpleFeatureTypeBuilder();
             tb.setName( info.getName() );
             tb.setNamespaceURI( info.getNamespace().getURI() );
 
@@ -1308,7 +1308,7 @@ public class ResourcePool {
             // attributes
             if (hints != null && hints.containsKey(JOINS)) {
                 List<Join> joins = (List<Join>) hints.get(JOINS);
-                SimpleFeatureTypeBuilder typeBuilder = new SimpleFeatureTypeBuilder();
+                ISOSimpleFeatureTypeBuilder typeBuilder = new ISOSimpleFeatureTypeBuilder();
                 typeBuilder.init(schema);
                 
                 for (Join j : joins) {

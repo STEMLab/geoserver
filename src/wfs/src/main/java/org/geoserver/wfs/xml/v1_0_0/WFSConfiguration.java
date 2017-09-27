@@ -35,6 +35,7 @@ import org.geotools.filter.v1_1.OGC;
 import org.geotools.gml2.FeatureTypeCache;
 import org.geotools.gml2.GML;
 import org.geotools.gml2.GMLConfiguration;
+import org.geotools.gml2.bindings.GMLAbstractFeatureTypeBinding;
 import org.geotools.util.logging.Logging;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.OptionalComponentParameter;
